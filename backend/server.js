@@ -40,8 +40,8 @@ app.post('/api/chat', async (req, res) => {
                     content: prompt,
                 },
             ],
-            // --- CAMBIO CLAVE AQUÍ ---
-            // Usamos Llama 3.3 Versatile que es el modelo ACTIVO actualmente
+            // --- KEY CHANGE HERE ---
+            // we will use Llama 3.3 Versatile is the ACTIVE model currently
             model: 'llama-3.3-70b-versatile', 
             // ------------------------
             temperature: 0.7,
@@ -53,7 +53,7 @@ app.post('/api/chat', async (req, res) => {
 
     } catch (error) {
         console.error('Error calling Groq API:', error);
-        // Enviamos el error exacto al frontend para que sepas qué pasa si vuelve a fallar
+        //sending the exact error to the front end to know what happend if it fails
         res.status(500).json({ error: error.message || 'Failed to get response from Groq API.' });
     }
 });
