@@ -1,10 +1,10 @@
 import React from 'react';
-import Supermarket from './Supermarket';
+import SupermarketWithChat from './SupermarketWithChat';
 
 const App = () => {
   return (
     <div className="app-container">
-      <Supermarket />
+      <SupermarketWithChat />
     </div>
   );
 };
