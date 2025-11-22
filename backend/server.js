@@ -43,7 +43,7 @@ app.post('/api/chat', async (req, res) => {
                     content: prompt,
                 },
             ],
-            model: 'llama3-8b-8192', // Using Llama 3 8B model
+            model: 'gemma-7b-it', // Using Gemma 7B model
             temperature: 0.7,
             max_tokens: 150,
         });

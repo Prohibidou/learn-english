@@ -108,6 +108,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 10px;
+  box-sizing: border-box;
 }
 
 .transcript {
@@ -127,17 +128,20 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
 }
 
 .mic-button {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   background-color: #d32f2f; /* Red for 'off' */
   color: white;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  flex-shrink: 0;
   transition: background-color 0.3s;
 }
 
@@ -145,8 +149,33 @@ body {
   background-color: #388e3c; /* Green for 'on' */
 }
 
+.text-input {
+  flex-grow: 1;
+  height: 50px;
+  padding: 0 15px;
+  border-radius: 25px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.send-button {
+    height: 50px;
+    padding: 0 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: #5a9bd5;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
 .status {
-  margin-left: 20px;
+  text-align: center;
   font-style: italic;
   color: #aaa;
+  height: 20px;
+  margin: 0;
 }
