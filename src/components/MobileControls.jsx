@@ -79,7 +79,7 @@ const MobileControls = ({ onMove, onLook }) => {
                     left: '20px',
                     width: '100px',
                     height: '100px',
-                    background: 'rgba(255, 255, 255, 0.2)',
+                    background: 'rgba(0, 0, 0, 0)', // Invisible
                     borderRadius: '50%',
                     pointerEvents: 'auto',
                     touchAction: 'none'
@@ -94,7 +94,7 @@ const MobileControls = ({ onMove, onLook }) => {
                     left: '50%',
                     width: '40px',
                     height: '40px',
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    background: 'rgba(0, 0, 0, 0)', // Invisible
                     borderRadius: '50%',
                     transform: `translate(calc(-50% + ${joystickPos.x}px), calc(-50% + ${joystickPos.y}px))`,
                     transition: isDragging ? 'none' : 'transform 0.2s'
