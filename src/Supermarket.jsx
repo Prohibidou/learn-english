@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber';
-import { Box, Plane, PointerLockControls, Text, Cylinder, Sphere } from '@react-three/drei';
+import { Box, Plane, Text, Cylinder, Sphere } from '@react-three/drei';
 import { Physics, usePlane, useBox, useSphere, useContactMaterial } from '@react-three/cannon';
 import * as THREE from 'three';
 
@@ -20,6 +20,9 @@ const Player = () => {
 
     // Mobile input refs
     const joystickRef = useRef({ x: 0, y: 0 });
+
+    // Desktop Drag-to-Look refs
+    const isDragging = useRef(false);
 
     useEffect(() => {
         api.velocity.subscribe((v) => (velocity.current = v));
@@ -57,8 +60,32 @@ const Player = () => {
             const { x, y } = e.detail;
             const sensitivity = 0.005;
             camera.rotation.y -= x * sensitivity;
-            // camera.rotation.x -= y * sensitivity; // Optional: vertical look
-            // Clamp vertical look if needed, but for now just horizontal is safer to avoid flipping
+        };
+
+        // Desktop Mouse Drag Logic
+        const handleMouseDown = (e) => {
+            // Only enable drag if clicking on the canvas (or generally not on UI)
+            // For simplicity, we assume if not on a specific UI element, it's the scene.
+            // We can check e.target to be sure it's the canvas if needed, but document level is okay for now
+            // as long as UI stops propagation if needed.
+            if (e.target.tagName === 'CANVAS') {
+                isDragging.current = true;
+            }
+        };
+
+        const handleMouseUp = () => {
+            isDragging.current = false;
+        };
+
+        const handleMouseMove = (e) => {
+            if (isDragging.current) {
+                const sensitivity = 0.002;
+                camera.rotation.y -= e.movementX * sensitivity;
+                camera.rotation.x -= e.movementY * sensitivity;
+
+                // Clamp vertical look
+                camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+            }
         };
 
         document.addEventListener('keydown', handleKeyDown);
@@ -66,11 +93,21 @@ const Player = () => {
         window.addEventListener('joystick-move', handleJoystickMove);
         window.addEventListener('touch-look', handleTouchLook);
 
+        // Add mouse listeners
+        document.addEventListener('mousedown', handleMouseDown);
+        document.addEventListener('mouseup', handleMouseUp);
+        document.addEventListener('mousemove', handleMouseMove);
+
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
             window.removeEventListener('joystick-move', handleJoystickMove);
             window.removeEventListener('touch-look', handleTouchLook);
+
+            // Remove mouse listeners
+            document.removeEventListener('mousedown', handleMouseDown);
+            document.removeEventListener('mouseup', handleMouseUp);
+            document.removeEventListener('mousemove', handleMouseMove);
         };
     }, [camera]);
 
@@ -535,7 +572,6 @@ const Materials = () => {
 }
 
 const Supermarket = () => {
-    const [isLocked, setIsLocked] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -555,12 +591,6 @@ const Supermarket = () => {
         lettuce: lettuceTexture,
         tomato: tomatoTexture,
         lays: laysTexture
-    };
-
-    const handleCanvasClick = () => {
-        if (!isLocked && !isMobile) {
-            setIsLocked(true);
-        }
     };
 
     // Mobile Event Dispatchers
@@ -595,7 +625,7 @@ const Supermarket = () => {
     return (
         <>
             {isMobile && <MobileControls onMove={onMobileMove} onLook={onMobileLook} />}
-            <Canvas onClick={handleCanvasClick} camera={{ fov: 60, position: [0, 1.7, 5] }} shadows>
+            <Canvas camera={{ fov: 60, position: [0, 1.7, 5] }} shadows>
                 {/* Improved Lighting */}
                 <color attach="background" args={['#f0f0f0']} />
                 <ambientLight intensity={0.6} color="#fff0e0" />
@@ -638,19 +668,17 @@ const Supermarket = () => {
 
                 </Physics>
 
-                {!isMobile && (isLocked ? (
-                    <PointerLockControls />
-                ) : (
+                {!isMobile && (
                     <Text
                         position={[0, 0, -2]}
-                        fontSize={0.5}
+                        fontSize={0.3}
                         color="black"
                         anchorX="center"
                         anchorY="middle"
                     >
-                        Click to start
+                        Hold Click & Drag to look • WASD to move
                     </Text>
-                ))}
+                )}
             </Canvas>
         </>
     );
