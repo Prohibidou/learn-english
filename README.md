@@ -123,21 +123,32 @@ This project creates an interactive 3D supermarket environment where users can:
 
 ### Running the Application
 
-1. **Start the backend server** (in `backend` directory):
+> **⚠️ IMPORTANT**: This project requires **TWO servers running simultaneously**:
+> - Backend server (port 3001) - Handles AI chat processing
+> - Frontend server (port 5173) - Serves the 3D application
+>
+> **Both must be running** or you'll get a `ERR_CONNECTION_REFUSED` error when trying to chat!
+
+1. **Start the backend server** (Open Terminal/PowerShell Window #1):
    ```bash
-   npm start
-   # or
+   cd backend
    node server.js
    ```
-   The backend will run on `http://localhost:3001`
+   ✅ Wait until you see: `Backend server listening at http://localhost:3001`
 
-2. **Start the frontend dev server** (in root directory):
+2. **Start the frontend dev server** (Open NEW Terminal/PowerShell Window #2):
    ```bash
+   # From the project root directory
    npm run dev
    ```
-   The frontend will run on `http://localhost:5173`
+   ✅ Wait until you see: `Local: http://localhost:5173/`
 
 3. **Open your browser** and navigate to `http://localhost:5173`
+
+**Quick verification:**
+- ✅ Backend running? → Visit http://localhost:3001 (should see a response)
+- ✅ Frontend running? → Visit http://localhost:5173 (should see the 3D supermarket)
+- ✅ Both running? → Try sending a chat message - it should work!
 
 ### Controls
 

@@ -154,6 +154,7 @@ const ChatInterface = ({ products }) => {
             </div>
 
             <form className="chat-input-container" onSubmit={handleSubmit}>
+                {/* Microphone button hidden - uncomment to enable voice input
                 <button
                     type="button"
                     className={`mic-button ${isRecording ? 'recording' : ''}`}
@@ -162,6 +163,7 @@ const ChatInterface = ({ products }) => {
                 >
                     🎤
                 </button>
+                */}
                 <input
                     type="text"
                     className="chat-input"
